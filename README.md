@@ -1,5 +1,12 @@
 Chapters on GPU Ray Tracing
 ====================================================================================================
+
+<div align="center">
+
+[Link to the book](./book/MovingToTheGPU.html)
+
+</div>
+
 This repository hosts a new book series that walks you through building your own GPU path tracer. It
 is intended for readers of the [_Ray Tracing In One Weekend_](https://raytracing.github.io/) series
 who are curious about implementing the same concepts on a GPU using a modern graphics API.
