@@ -3,7 +3,7 @@ Chapters on GPU Ray Tracing
 
 <div align="center">
 
-[Link to the book](./book/MovingToTheGPU.html)
+[Link to the book](https://chuanhao01.github.io/gpu-tracing/book/MovingToTheGPU.html)
 
 </div>
 
