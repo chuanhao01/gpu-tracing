@@ -412,13 +412,15 @@ explainer.
 A `Result` is a variant type that can hold either a success (`Ok`) value or an error (`Err`) value.
 The types of the `Ok` and `Err` variants are generic:
 
+<script type="preformatted">
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Rust
-    pub enum Result<&#xFEFF;T, E> {
+    pub enum Result<T, E> {
         Ok(T),
         Err(E),
     }
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     [Figure [rust-result]: The `Result` type]
+</script>
 
 `T` and `E` can be any type. It's common for a library to define its own error types to represent
 various error conditions.
@@ -447,8 +449,9 @@ and perhaps return an entirely new error. For example:
 Rust provides the `?` operator to automatically unpack a `Result` and return early if it holds an
 error. A Rust version of the C program above could be written like this:
 
+<script type="preformatted">
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Rust
-    fn function_with_result() -> Result<&#xFEFF;Foo, FooError> {...}
+    fn function_with_result() -> Result<Foo, FooError> {...}
 
     fn caller() -> Result<(), FooError> {
         let foo: Foo = function_with_result()?;
@@ -458,14 +461,16 @@ error. A Rust version of the C program above could be written like this:
         Ok(())
     }
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+</script>
 
 If `function_with_result()` returns an error, the `?` operator will cause `caller` to return and
 propagate the error value. This works as long as `caller` and `function_with_result` either return
 the same error type or types with a known conversion. There are various other ways to handle an
 error:
 
+<script type="preformatted">
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Rust
-    fn function_with_result() -> Result<&#xFEFF;Foo, FooError> {...}
+    fn function_with_result() -> Result<Foo, FooError> {...}
 
     fn caller() -> Result<(), FooError> {
         ...
@@ -488,6 +493,7 @@ error:
         Ok(())
     }
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+</script>
 
 I like to keep things simple in my code examples and use the `?` operator. Instead of defining
 custom error types and conversions, I use a catch all `Error` type from a library called *anyhow*.
@@ -748,8 +754,9 @@ code.[^ch3-footnote2]
 
 Let's define the vertex and fragment functions, which I'm calling `display_vs` and `display_fs`:
 
+<script type="preformatted">
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Swift highlight
-    alias TriangleVertices = array<&#xFEFF;vec2f, 3>;
+    alias TriangleVertices = array<vec2f, 3>;
     var<private> vertices: TriangleVertices = TriangleVertices(
       vec2f(-0.5, -0.5),
       vec2f( 0.5, -0.5),
@@ -765,6 +772,7 @@ Let's define the vertex and fragment functions, which I'm calling `display_vs` a
     }
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     [Listing [vertex-and-fragment-shaders]: <kbd>[shaders.wgsl]</kbd> Vertex and Fragment shaders]
+</script>
 
 I'm using the "vs" and "fs" suffixes as shorthand for "vertex stage" and "fragment stage". Together,
 these two functions form our "display pipeline" (the "display" part will become more clear later).
@@ -1059,14 +1067,15 @@ setting the 4 corners of the rectangle to $(-1, 1)$, $(1, 1)$, $(1, -1)$, $(-1, 
 the entire viewport regardless of its dimensions.
 
 
+<script type="preformatted">
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Swift delete 
-    alias TriangleVertices = array<&#xFEFF;vec2f, 3>;
+    alias TriangleVertices = array<vec2f, 3>;
     var<private> vertices: TriangleVertices = TriangleVertices(
       vec2f(-0.5, -0.5),
       vec2f( 0.5, -0.5),
       vec2f( 0.0,  0.5),
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Swift highlight
-    alias TriangleVertices = array<&#xFEFF;vec2f, 6>;
+    alias TriangleVertices = array<vec2f, 6>;
     var<private> vertices: TriangleVertices = TriangleVertices(
       vec2f(-1.0,  1.0),
       vec2f(-1.0, -1.0),
@@ -1086,6 +1095,7 @@ the entire viewport regardless of its dimensions.
     }
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     [Listing [quad-vertices]: <kbd>[shaders.wgsl]</kbd> Full-Screen Quad Vertices]
+</script>
 
 
   ![Figure [half-screen-quad]: Half-Screen Triangle](../images/img-03-half-screen-quad.png)
@@ -1377,7 +1387,7 @@ C/C++ struct:
 
 Now, let's allocate the backing buffer object and initialize its contents:
 
-
+<script type="preformatted">
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Rust
     use bytemuck::{Pod, Zeroable};
 
@@ -1421,7 +1431,7 @@ Now, let's allocate the backing buffer object and initialize its contents:
             };
             let uniform_buffer = device.create_buffer(&wgpu::BufferDescriptor {
                 label: Some("uniforms"),
-                size: std::mem::size_of::<&#xFEFF;Uniforms>() as u64,
+                size: std::mem::size_of::<Uniforms>() as u64,
                 usage: wgpu::BufferUsages::UNIFORM,
                 mapped_at_creation: true,
             });
@@ -1446,6 +1456,7 @@ Now, let's allocate the backing buffer object and initialize its contents:
         ...
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     [Listing [uniforms-struct-cpu]: <kbd>[render.rs]</kbd> Uniform buffer object initialization]
+</script>
 
 This code allocates a buffer resource that is large enough to store an instance of `Uniforms` and
 copies the contents of `uniforms` into it. The buffer is mapped at creation so that its address
@@ -1636,6 +1647,7 @@ of $t$ represent points behind the origin, and $t=0$ is the same as the origin.
 Let's define the data structure to represent a ray:
 
 
+<script type="preformatted">
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Swift
     struct Uniforms {
       width: u32,
@@ -1652,10 +1664,11 @@ Let's define the data structure to represent a ray:
 
 
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Swift
-    alias TriangleVertices = array<&#xFEFF;vec2f, 6>;
+    alias TriangleVertices = array<vec2f, 6>;
     ...
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     [Listing [ray-struct]: <kbd>[shaders.wgsl]</kbd> Ray structure]
+</script>
 
 
 Let's now model a simple pinhole camera. Initially we'll the define the eye position (where the
@@ -1951,11 +1964,12 @@ Let's declare the scene with a second (large) sphere that serves as the "ground"
 sphere will sit. We can declare the array as a private global, like we did for the vertices of the
 full-screen quad:
 
+<script type="preformatted">
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Swift
     ...
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Swift highlight
     const OBJECT_COUNT: u32 = 2;
-    alias Scene = array<&#xFEFF;Sphere, OBJECT_COUNT>;
+    alias Scene = array<Sphere, OBJECT_COUNT>;
     var<private> scene: Scene = Scene(
       Sphere(/*center*/ vec3(0., 0., -1.), /*radius*/ 0.5),
       Sphere(/*center*/ vec3(0., -100.5, -1.), /*radius*/ 100.),
@@ -1963,7 +1977,7 @@ full-screen quad:
 
 
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Swift
-    alias TriangleVertices = array<&#xFEFF;vec2f, 6>;
+    alias TriangleVertices = array<vec2f, 6>;
     var<private> vertices: TriangleVertices = TriangleVertices(
       vec2f(-1.0,  1.0),
       vec2f(-1.0, -1.0),
@@ -1975,6 +1989,7 @@ full-screen quad:
     ...
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     [Listing [scene-array]: <kbd>[shaders.wgsl]</kbd> Hard-coded scene declaration]
+</script>
 
 
 The scene traversal code is straightforward: loop through the scene array and keep track of the
@@ -1983,12 +1998,13 @@ initialize $t$ with a value that is larger than all other possible values. Since
 floating-point numbers, _infinity_ is a suitable initial value. However, since WGSL doesn't quite
 support infinities[^ch5-footnote4], I'll use the largest representable `f32` value as a substitute:
 
+<script type="preformatted">
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Swift highlight
     const FLT_MAX: f32 = 3.40282346638528859812e+38;
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Swift
     ...
     const OBJECT_COUNT: u32 = 2;
-    alias Scene = array<&#xFEFF;Sphere, OBJECT_COUNT>;
+    alias Scene = array<Sphere, OBJECT_COUNT>;
     var<private> scene: Scene = Scene(
       Sphere(/*center*/ vec3(0., 0., -1.), /*radius*/ 0.5),
       Sphere(/*center*/ vec3(0., -100.5, -1.), /*radius*/ 100.),
@@ -2026,6 +2042,7 @@ support infinities[^ch5-footnote4], I'll use the largest representable `f32` val
     }
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     [Listing [single-sphere]: <kbd>[shaders.wgsl]</kbd> Simple scene traversal]
+</script>
 
 
 This should result in the following image:
@@ -2236,10 +2253,10 @@ statement (why needlessly evaluate both branches after all?):
 
 This is perfectly fine and will behave in the same way. In fact, it's possible that this will
 compile down to the exact same GPU instructions as the version with `select`. GPUs are generally not
-good at handling conditional branches in code without sacrificing some amount of parallelism and a
-shader compiler may decide to eliminate branches altogether for simple statements like these.
-Writing efficient GPU code requires a good understanding of how GPUs deal with divergent control flow
--- a topic that we will discuss more later on.
+good at handling conditional branches in code without sacrificing some amount of parallelism (though
+this depends on several factors). A good shader compiler will often eliminate branches altogether
+for simple conditionals like these. Writing efficient GPU code requires a good understanding of how
+GPUs deal with divergent control flow -- a topic that we will discuss more later on.
 
 Let's update the fragment shader to make use of the new data structure. Let's also change our
 shading code to visualize the normal vector by mapping the coordinates (from the $[-1, 1]$ range)
@@ -2507,6 +2524,7 @@ we need to do. As long as we call `write_buffer` before encoding any other GPU c
 the copy destination (i.e. our uniform buffer) on the same queue, the copy is guaranteed
 to complete before the shader runs and reads from the buffer:
 
+<script type="preformatted">
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Rust
     ...
     #[derive(Copy, Clone, Pod, Zeroable)]
@@ -2553,11 +2571,13 @@ to complete before the shader runs and reads from the buffer:
         pub fn render_frame(&mut self, target: &wgpu::TextureView) {
             self.uniforms.frame_count += 1;
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Rust highlight
-            self.queue.write_buffer(&self.uniform_buffer, 0, bytemuck::bytes_of(&self.uniforms));
+            self.queue
+                .write_buffer(&self.uniform_buffer, 0, bytemuck::bytes_of(&self.uniforms));
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Rust
             ...
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     [Listing [queue-write-buffer]: <kbd>[render.rs]</kbd> Updating the uniform buffer every frame]
+</script>
 
 
 That's pretty much it. Since the new code always updates the uniform buffer before a GPU submission
@@ -2606,8 +2626,566 @@ than the display refresh rate.
 [^ch6-footnote5]: See [wgpu#1438](https://github.com/gfx-rs/wgpu/discussions/1438) for an
 interesting discussion on the motivations behind the async-only buffer mapping API.
 
-[^ch6-footnote6]: See the WebGPU spec
+[^ch6-footnote6]: See the WebGPU specification for
 [GPUQueue.writeBuffer](https://www.w3.org/TR/webgpu/#dom-gpuqueue-writebuffer)
+
+Radiance Texture
+----------------
+Earlier, I talked about spreading the sample accumulation over multiple frames. At each frame,
+the program will compute one sample per pixel and add it to a per-pixel running sum. Every
+time we want to display the current average, we can divide the cumulative sum for every pixel by
+`frame_count` and render that to the surface. In order to achieve this, we need to put aside some
+memory to persist the running sums across frames. A GPU texture is a perfect place to store this
+information.
+
+The samples at an individual pixel are meant to collectively represent a measurement of light
+energy. Specifically, we want to compute the energy emanating from a unit patch of surface that
+was intersected by the camera ray, towards another tiny patch of surface at the ray's
+origin.[^ch6-footnote7] We want to further constrain the energy measurement to a moment in
+time (as we are rendering a "still" image).
+
+The radiometric term for this quantity is _radiance_, which appears frequently in the
+rendering literature. Let's follow this definition and name the texture `radiance_samples`:
+
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Rust
+    use bytemuck::{Pod, Zeroable};
+
+    pub struct PathTracer {
+        device: wgpu::Device,
+        queue: wgpu::Queue,
+
+        uniforms: Uniforms,
+        uniform_buffer: wgpu::Buffer,
+
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Rust highlight
+        radiance_samples: wgpu::Texture,
+
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Rust
+        display_pipeline: wgpu::RenderPipeline,
+    }
+
+    #[derive(Copy, Clone, Pod, Zeroable)]
+    #[repr(C)]
+    struct Uniforms {
+        width: u32,
+        height: u32,
+        frame_count: u32,
+    }
+
+    impl PathTracer {
+        pub fn new(
+            device: wgpu::Device,
+            queue: wgpu::Queue,
+            width: u32,
+            height: u32,
+        ) -> PathTracer {
+            device.on_uncaptured_error(Box::new(|error| {
+                panic!("Aborting due to an error: {}", error);
+            }));
+
+            let shader_module = compile_shader_module(&device);
+            let (display_pipeline, display_layout) =
+                create_display_pipeline(&device, &shader_module);
+
+            // Initialize the uniform buffer.
+            let uniforms = Uniforms {
+                width,
+                height,
+                frame_count: 0,
+            };
+            let uniform_buffer = device.create_buffer(&wgpu::BufferDescriptor {
+                label: Some("uniforms"),
+                size: std::mem::size_of::<Uniforms>() as u64,
+                usage: wgpu::BufferUsages::UNIFORM | wgpu::BufferUsages::COPY_DST,
+                mapped_at_creation: false,
+            });
+
+
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Rust highlight
+            let radiance_samples = create_sample_texture(&device, width, height);
+
+
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Rust
+            PathTracer {
+                device,
+                queue,
+                uniforms,
+                uniform_buffer,
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Rust highlight
+                radiance_samples,
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Rust
+                display_pipeline,
+            }
+        }
+        ...
+    }
+    ...
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Rust highlight
+    fn create_sample_texture(device: &wgpu::Device, width: u32, height: u32) -> wgpu::Texture {
+        device.create_texture(&wgpu::TextureDescriptor {
+            label: Some("radiance samples"),
+            size: wgpu::Extent3d {
+                width,
+                height,
+                depth_or_array_layers: 1,
+            },
+            mip_level_count: 1,
+            sample_count: 1,
+            dimension: wgpu::TextureDimension::D2,
+            format: wgpu::TextureFormat::Rgba32Float,
+            usage: wgpu::TextureUsages::TEXTURE_BINDING | wgpu::TextureUsages::STORAGE_BINDING,
+            view_formats: &[],
+        })
+    }
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    [Listing [radiance-samples-texture]: <kbd>[render.rs]</kbd> Radiance samples texture]
+
+
+The texture has the same dimensions as the window surface, so that the resolution of the
+rendered image matches what gets displayed. (Though, it's not uncommon to render at a lower
+resolution and upsample that in order to save on computations.) The texture format is `Rgba32Float`,
+which stores every pixel (or "texel") as four 32-bit floating point components (one for each of the
+4 RGBA channels). This uses more memory than the 8-bit `Rgba8Unorm` format we used for the display
+surface but provides sufficient precision to store very large sums of radiance samples on all color
+channels.
+
+The usages (`TEXTURE_BINDING` and `STORAGE_BINDING`) enable the texture to be bound for reading and
+writing. wgpu doesn't allow a texture to be bound to the same shader stage simultaneously with both
+read and write access, although it is possible using an extension feature[^ch6-footnote8]. This may
+not be supported on all GPUs, so let's avoid depending on specific GPU features for now. Instead of
+reading and modifying the same texture in the render pass we can "ping-pong" between two textures.
+
+The pipeline will declare two texture bindings: a read-only binding that contains the previously
+accumulated sums, and a second (write-only) storage binding where it will output the updated sums.
+We'll also create two texture objects for each binding and alternate their binding assignments
+for every frame, so that they continuously swap roles: the texture that was previously the write
+target provides the accumulated sums for the next frame, and vice versa.
+
+Start by changing the `radiance_samples` declaration to an array of 2 textures:
+
+
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Rust
+    use bytemuck::{Pod, Zeroable};
+
+    pub struct PathTracer {
+        device: wgpu::Device,
+        queue: wgpu::Queue,
+
+        uniforms: Uniforms,
+        uniform_buffer: wgpu::Buffer,
+
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Rust highlight
+        radiance_samples: [wgpu::Texture; 2],
+
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Rust
+        display_pipeline: wgpu::RenderPipeline,
+    }
+
+    #[derive(Copy, Clone, Pod, Zeroable)]
+    #[repr(C)]
+    struct Uniforms {
+        width: u32,
+        height: u32,
+        frame_count: u32,
+    }
+
+    impl PathTracer {
+        pub fn new(
+            device: wgpu::Device,
+            queue: wgpu::Queue,
+            width: u32,
+            height: u32,
+        ) -> PathTracer {
+            ...
+
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Rust highlight
+            let radiance_samples = create_sample_textures(&device, width, height);
+
+
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Rust
+            ...
+        }
+        ...
+    }
+    ...
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Rust highlight
+    fn create_sample_textures(
+        device: &wgpu::Device,
+        width: u32,
+        height: u32,
+    ) -> [wgpu::Texture; 2] {
+        let desc = wgpu::TextureDescriptor {
+            label: Some("radiance samples"),
+            size: wgpu::Extent3d {
+                width,
+                height,
+                depth_or_array_layers: 1,
+            },
+            mip_level_count: 1,
+            sample_count: 1,
+            dimension: wgpu::TextureDimension::D2,
+            format: wgpu::TextureFormat::Rgba32Float,
+            usage: wgpu::TextureUsages::TEXTURE_BINDING | wgpu::TextureUsages::STORAGE_BINDING,
+            view_formats: &[],
+        };
+        // Create two textures with the same parameters.
+        [device.create_texture(&desc), device.create_texture(&desc)]
+    }
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    [Listing [radiance-samples-textures]: <kbd>[render.rs]</kbd> Radiance samples textures]
+
+
+Now, let's add the new bindings to the the bind group layout definition. I'm going to assign
+binding index $1$ to the read-only binding (previous sums) and $2$ to the write-only storage
+binding (the updated sums):
+
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Rust
+    ...
+    fn create_display_pipeline(
+        device: &wgpu::Device,
+        shader_module: &wgpu::ShaderModule,
+    ) -> (wgpu::RenderPipeline, wgpu::BindGroupLayout) {
+        let bind_group_layout = device.create_bind_group_layout(&wgpu::BindGroupLayoutDescriptor {
+            label: None,
+            entries: &[
+                wgpu::BindGroupLayoutEntry {
+                    binding: 0,
+                    visibility: wgpu::ShaderStages::FRAGMENT,
+                    ty: wgpu::BindingType::Buffer {
+                        ty: wgpu::BufferBindingType::Uniform,
+                        has_dynamic_offset: false,
+                        min_binding_size: None,
+                    },
+                    count: None,
+                },
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Rust highlight
+                wgpu::BindGroupLayoutEntry {
+                    binding: 1,
+                    visibility: wgpu::ShaderStages::FRAGMENT,
+                    ty: wgpu::BindingType::Texture {
+                        sample_type: wgpu::TextureSampleType::Float {
+                            filterable: false,
+                        },
+                        view_dimension: wgpu::TextureViewDimension::D2,
+                        multisampled: false,
+                    },
+                    count: None,
+                },
+                wgpu::BindGroupLayoutEntry {
+                    binding: 2,
+                    visibility: wgpu::ShaderStages::FRAGMENT,
+                    ty: wgpu::BindingType::StorageTexture {
+                        access: wgpu::StorageTextureAccess::WriteOnly,
+                        format: wgpu::TextureFormat::Rgba32Float,
+                        view_dimension: wgpu::TextureViewDimension::D2,
+                    },
+                    count: None,
+                },
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Rust
+            ],
+        });
+        let pipeline = device.create_render_pipeline(&wgpu::RenderPipelineDescriptor {
+        ...
+    }
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    [Listing [updated-pipeline-layout]: <kbd>[render.rs]</kbd> Updated bind group layout]
+
+
+Next, we need to change the actual bind group object to match the new layout. We want to alternate
+the texture assignments but a bind group cannot be modified once it's created. We could instead
+create two bind groups with the textures swapped and alternate those at render time:
+
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Rust
+    ...
+    pub struct PathTracer {
+        device: wgpu::Device,
+        queue: wgpu::Queue,
+
+        uniforms: Uniforms,
+        uniform_buffer: wgpu::Buffer,
+
+        radiance_samples: [wgpu::Texture; 2],
+
+        display_pipeline: wgpu::RenderPipeline,
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Rust highlight
+        display_bind_groups: [wgpu::BindGroup; 2],
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Rust
+    }
+
+    #[derive(Copy, Clone, Pod, Zeroable)]
+    #[repr(C)]
+    struct Uniforms {
+        width: u32,
+        height: u32,
+        frame_count: u32,
+    }
+
+    impl PathTracer {
+        pub fn new(
+            device: wgpu::Device,
+            queue: wgpu::Queue,
+            width: u32,
+            height: u32,
+        ) -> PathTracer {
+            device.on_uncaptured_error(Box::new(|error| {
+                panic!("Aborting due to an error: {}", error);
+            }));
+
+            let shader_module = compile_shader_module(&device);
+            let (display_pipeline, display_layout) =
+                create_display_pipeline(&device, &shader_module);
+
+            // Initialize the uniform buffer.
+            let uniforms = Uniforms {
+                width,
+                height,
+                frame_count: 0,
+            };
+            let uniform_buffer = device.create_buffer(&wgpu::BufferDescriptor {
+                label: Some("uniforms"),
+                size: std::mem::size_of::<Uniforms>() as u64,
+                usage: wgpu::BufferUsages::UNIFORM | wgpu::BufferUsages::COPY_DST,
+                mapped_at_creation: false,
+            });
+
+            let radiance_samples = create_sample_textures(&device, width, height);
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Rust highlight
+            let display_bind_groups = create_display_bind_groups(
+                &device,
+                &display_layout,
+                &radiance_samples,
+                &uniform_buffer,
+            );
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Rust
+
+            PathTracer {
+                device,
+                queue,
+                uniforms,
+                uniform_buffer,
+                radiance_samples,
+                display_pipeline,
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Rust highlight
+                display_bind_groups,
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Rust
+            }
+        }
+        ...
+    }
+    ...
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Rust highlight
+
+    fn create_display_bind_groups(
+        device: &wgpu::Device,
+        layout: &wgpu::BindGroupLayout,
+        textures: &[wgpu::Texture; 2],
+        uniform_buffer: &wgpu::Buffer,
+    ) -> [wgpu::BindGroup; 2] {
+        let views = [
+            textures[0].create_view(&wgpu::TextureViewDescriptor::default()),
+            textures[1].create_view(&wgpu::TextureViewDescriptor::default()),
+        ];
+        [
+            // Bind group with view[0] assigned to binding 1 and view[1] assigned to binding 2.
+            device.create_bind_group(&wgpu::BindGroupDescriptor {
+                label: None,
+                layout: &layout,
+                entries: &[
+                    wgpu::BindGroupEntry {
+                        binding: 0,
+                        resource: wgpu::BindingResource::Buffer(wgpu::BufferBinding {
+                            buffer: &uniform_buffer,
+                            offset: 0,
+                            size: None,
+                        }),
+                    },
+                    wgpu::BindGroupEntry {
+                        binding: 1,
+                        resource: wgpu::BindingResource::TextureView(&views[0]),
+                    },
+                    wgpu::BindGroupEntry {
+                        binding: 2,
+                        resource: wgpu::BindingResource::TextureView(&views[1]),
+                    },
+                ],
+            }),
+            // Bind group with view[1] assigned to binding 1 and view[0] assigned to binding 2.
+            device.create_bind_group(&wgpu::BindGroupDescriptor {
+                label: None,
+                layout: &layout,
+                entries: &[
+                    wgpu::BindGroupEntry {
+                        binding: 0,
+                        resource: wgpu::BindingResource::Buffer(wgpu::BufferBinding {
+                            buffer: &uniform_buffer,
+                            offset: 0,
+                            size: None,
+                        }),
+                    },
+                    wgpu::BindGroupEntry {
+                        binding: 1,
+                        resource: wgpu::BindingResource::TextureView(&views[1]),
+                    },
+                    wgpu::BindGroupEntry {
+                        binding: 2,
+                        resource: wgpu::BindingResource::TextureView(&views[0]),
+                    },
+                ],
+            }),
+        ]
+    }
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    [Listing [textures-bind-groups]:
+     <kbd>[render.rs]</kbd> Bind groups with different texture assignments]
+
+Now, let's update the shader:
+
+<script type="preformatted">
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Swift
+    ...
+    const OBJECT_COUNT: u32 = 2;
+    alias Scene = array<Sphere, OBJECT_COUNT>;
+    var<private> scene: Scene = Scene(
+      Sphere(/*center*/ vec3(0., 0., -1.), /*radius*/ 0.5),
+      Sphere(/*center*/ vec3(0., -100.5, -1.), /*radius*/ 100.),
+    );
+
+
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Swift highlight
+    @group(0) @binding(1) var radiance_samples_old: texture_2d<f32>;
+    @group(0) @binding(2) var radiance_samples_new: texture_storage_2d<rgba32float, write>;
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Swift
+    ...
+    @fragment fn display_fs(@builtin(position) pos: vec4f) -> @location(0) vec4f {
+      let origin = vec3(0.);
+      let focus_distance = 1.;
+      let aspect_ratio = f32(uniforms.width) / f32(uniforms.height);
+
+      // Normalize the viewport coordinates.
+      var uv = pos.xy / vec2f(f32(uniforms.width - 1u), f32(uniforms.height - 1u));
+
+      // Map `uv` from y-down (normalized) viewport coordinates to camera coordinates.
+      uv = (2. * uv - vec2(1.)) * vec2(aspect_ratio, -1.);
+
+      let direction = vec3(uv, -focus_distance);
+      let ray = Ray(origin, direction);
+      var closest_hit = Intersection(vec3(0.), FLT_MAX);
+      for (var i = 0u; i < OBJECT_COUNT; i += 1u) {
+        var sphere = scene[i];
+        sphere.radius += sin(f32(uniforms.frame_count) * 0.02) * 0.2;
+        let hit = intersect_sphere(ray, sphere);
+        if hit.t > 0. && hit.t < closest_hit.t {
+          closest_hit = hit;
+        }
+      }
+
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Swift highlight
+      var radiance_sample: vec3f;
+      if closest_hit.t < FLT_MAX {
+        radiance_sample = vec3(0.5 * closest_hit.normal + vec3(0.5));
+      } else {
+        radiance_sample = sky_color(ray);
+      }
+
+      // Fetch the old sum of samples.
+      var old_sum: vec3f;
+      if uniforms.frame_count > 1 {
+        old_sum = textureLoad(radiance_samples_old, vec2u(pos.xy), 0).xyz;
+      } else {
+        old_sum = vec3(0.);
+      }
+
+      // Compute and store the new sum.
+      let new_sum = radiance_sample + old_sum;
+      textureStore(radiance_samples_new, vec2u(pos.xy), vec4(new_sum, 0.));
+
+      // Display the average.
+      return vec4(new_sum / f32(uniforms.frame_count), 1.);
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Swift
+    }
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    [Listing [sample-accumulation]: <kbd>[shaders.wgsl]</kbd> Sample accumulation]
+</script>
+
+The intersection test logic remains the same as before but instead of returning the computed
+radiance value right away, we first store it in a local variable (`radiance_sample`). Next we fetch
+the current tally from the "old" texture (`old_sum`) and compute the updated tally by adding
+`radiance_sample` to it. We want to ensure that the accumulation starts as 0, so we set `old_sum`
+to `vec3(0)` for the initial frame (when `frame_count` is equal to $1$). Then simply return
+`new_sum / f32(uniform.frame_count)`, i.e. the current average, in the RGB channels of the output
+color.[^ch6-footnote9]
+
+Finally, let's update the bind group assignment in `PathTracer::render_frame` to ping-pong between
+the two bind groups we created, using even and odd values of `frame_count` as a toggle:
+
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Rust
+    ...
+    impl PathTracer {
+        ...
+        pub fn render_frame(&mut self, target: &wgpu::TextureView) {
+            self.uniforms.frame_count += 1;
+            self.queue
+                .write_buffer(&self.uniform_buffer, 0, bytemuck::bytes_of(&self.uniforms));
+
+            let mut encoder = self
+                .device
+                .create_command_encoder(&wgpu::CommandEncoderDescriptor {
+                    label: Some("render frame"),
+                });
+
+            let mut render_pass = encoder.begin_render_pass(&wgpu::RenderPassDescriptor {
+                label: Some("display pass"),
+                color_attachments: &[Some(wgpu::RenderPassColorAttachment {
+                    view: target,
+                    resolve_target: None,
+                    ops: wgpu::Operations {
+                        load: wgpu::LoadOp::Clear(wgpu::Color::BLACK),
+                        store: wgpu::StoreOp::Store,
+                    },
+                })],
+                ..Default::default()
+            });
+
+            render_pass.set_pipeline(&self.display_pipeline);
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Rust highlight
+            render_pass.set_bind_group(
+                0,
+                &self.display_bind_groups[(self.uniforms.frame_count % 2) as usize],
+                &[],
+            );
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Rust
+
+            // Draw 1 instance of a polygon with 6 vertices
+            render_pass.draw(0..6, 0..1);
+
+            // End the render pass by consuming the object.
+            drop(render_pass);
+
+            let command_buffer = encoder.finish();
+            self.queue.submit(Some(command_buffer));
+        }
+    }
+    ...
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    [Listing [ping-pong-bind-groups]: <kbd>[render.rs]</kbd> Ping-pong bind groups]
+
+When you run the code now, you should see the animation from before but the displayed image should
+look a bit smudgy. You should be able to see the oscillating sphere leave behind a "smear" over the
+first few seconds and the image should eventually settle at something like this:
+
+  ![Figure [temporal-blur-effect]: Temporal Blur Effect](../images/img-12-blurred-animation.png)
+
+[^ch6-footnote7]: We are making the assumption that light travels along straight lines.
+
+[^ch6-footnote8]: wgpu supports a
+[read/write access mode](https://docs.rs/wgpu/0.19.3/wgpu/enum.StorageTextureAccess.html#variant.ReadWrite)
+which is hidden behind the adapter feature `TEXTURE_ADAPTER_SPECIFIC_FORMAT_FEATURES`. This isn't
+guaranteed to be supported by all GPUs but feel free use it if yours does.
+
+[^ch6-footnote9]: Note that the value we store in the texture (`vec4(new_sum, 0.)`) has its alpha
+component set to $0$. We aren't making use of the alpha values so it doesn't matter what we set
+this to.
+
 
 
                                (insert acknowledgments.md.html here)
